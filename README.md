@@ -1,70 +1,35 @@
 # infersharp-ext README
 
-This is the README for your extension "infersharp-ext". After writing up a brief description, we recommend including the following sections.
+This is an extension which integrates [InferSharp](https://github.com/microsoft/infersharp) into VSCode. Currently, this extension has only been tested for Windows.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+This extension adds the *InferSharp Analysis* command to the Command Palette. 
 
-For example if there is an image subfolder under your extension project workspace:
+If InferSharp has not yet been set up on the machine yet, this command will perform installation by installing WSL Ubuntu if it is not already present and then downloading and unpacking InferSharp binaries to the WSL Linux file system.
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+After setup, subsequent invocations of the command prompt the user to provide the root of a directory tree which contains the .dll and .pdb files produced by the project's build system. Note that these files need only need be somewhere in the tree, as InferSharp will traverse the tree to find the binaries. It conducts the analysis through WSL and copies the resulting infer-out directory to the provided path. The bug report is located at infer-out/report.txt.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Please see the requirements for [WSL](https://docs.microsoft.com/en-us/windows/wsl/install). In particular, please check that you are running Windows 10 version 2004 or higher (Build 19041 or higher), or Windows 11. Otherwise, automated setup may fail and you will have to set up WSL manually.
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+Additionally, please ensure that Ubuntu is your default distribution. 
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Automatic setup may fail, particularly if your version of Windows is too old. In this case, please try to run [manual](https://docs.microsoft.com/en-us/windows/wsl/install-manual) installation of WSL. Please set Ubuntu as the default distribution via the -s flag.
+
+After setup, please execute the following commands from Powershell:
+
+```
+wsl -u root --cd '//wsl/Ubuntu/home/root/root' wget https://github.com/microsoft/infersharp/releases/download/v1.2/infersharp-linux64-v1.2.tar.gz -O infersharp.tar.gz
+wsl -u root --cd '//wsl/Ubuntu/home/root/root' tar -xvzf infersharp.tar.gz
+wsl -u root --cd '//wsl/Ubuntu/home/root/root' rm infersharp.tar.gz
+```
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release.

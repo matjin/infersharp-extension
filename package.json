@@ -2,7 +2,8 @@
   "name": "infersharp-ext",
 	"displayName": "InferSharp",
 	"description": "",
-	"version": "0.0.1",
+	"version": "1.0.0",
+	"publisher": "matthew-jin",
 	"engines": {
 		"vscode": "^1.62.0"
 	},
@@ -10,14 +11,14 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:infersharp-ext.helloWorld"
+        "onCommand:infersharp-ext.analyze"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "infersharp-ext.helloWorld",
-				"title": "Hello World"
+				"command": "infersharp-ext.analyze",
+				"title": "InferSharp Analysis"
 			}
 		]
 	},
