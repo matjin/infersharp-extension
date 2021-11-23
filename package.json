@@ -14,6 +14,10 @@
     "Other"
   ],
   "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "light"
+  },
   "activationEvents": [
     "onCommand:infersharp-ext.analyze"
   ],
