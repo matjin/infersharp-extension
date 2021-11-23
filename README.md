@@ -30,6 +30,9 @@ wsl -u root --cd '//wsl/Ubuntu/home/root/root' rm infersharp.tar.gz
 
 The *InferSharp Analysis* command will now be ready for you to use.
 
+## License
+The extension is MIT-licensed.
+
 ## Release Notes
 
 ### 1.0.0
