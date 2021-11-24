@@ -1,6 +1,6 @@
 # infersharp-ext README
 
-This is an extension which integrates [InferSharp](https://github.com/microsoft/infersharp) into VSCode. Currently, this extension has only been tested for Windows.
+This is an extension which integrates [InferSharp](https://github.com/microsoft/infersharp) version 1.2 into VSCode. Currently, this extension has only been tested for Windows.
 
 ## Features
 
@@ -14,21 +14,35 @@ After setup, subsequent invocations of the command prompt the user to provide th
 
 Please see the requirements for [WSL](https://docs.microsoft.com/en-us/windows/wsl/install). In particular, please check that you are running Windows 10 version 2004 or higher (Build 19041 or higher), or Windows 11. Otherwise, automated setup may fail and you will have to set up WSL manually.
 
-Additionally, please ensure that Ubuntu is your default distribution. 
+Additionally, please ensure that Ubuntu 20.04 is your default distribution. 
 
 ## Known Issues
 
-Automatic setup may fail, particularly if your version of Windows is too old. In this case, please try to run [manual](https://docs.microsoft.com/en-us/windows/wsl/install-manual) installation of WSL. Please set Ubuntu as the default distribution via the -s flag.
+*Automatic Setup Failure*
 
-After setup, please execute the following commands from Powershell:
+Automatic setup may fail, particularly if your version of Windows is too old. In this case, please try to run [manual](https://docs.microsoft.com/en-us/windows/wsl/install-manual) installation of WSL and set Ubuntu 20.04 as the default distribution via the -s flag.
+
+After setup, please execute the following commands from Powershell (particularly note the rename of the binary folder to the correct version):
 
 ```
 wsl ~ -u root wget https://github.com/microsoft/infersharp/releases/download/v1.2/infersharp-linux64-v1.2.tar.gz -O infersharp.tar.gz
 wsl ~ -u root tar -xvzf infersharp.tar.gz
+wsl ~ -u root mv infersharp infersharp1.2
 wsl ~ -u root rm infersharp.tar.gz
 ```
 
 The *InferSharp Analysis* command will now be ready for you to use.
+
+*GLIBC error*
+
+It's possible that you see the following issue upon attempting to run the analysis:
+
+```
+infersharp/infer/lib/infer/infer/bin/infer: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.28' not found (required by infersharp/infer/lib/infer/infer/bin/infer)
+infersharp/infer/lib/infer/infer/bin/infer: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.28' not found (required by /root/infersharp/infer/lib/infer/infer/bin/../libso/libsqlite3.so.0)
+```
+
+This indicates the version of GLIBC on WSL is too old for the InferSharp binaries to execute; this can happen because you installed Ubuntu 18.04, for which the highest version of GLIBC is 2.27. To resolve this, please ensure that you've installed WSL Ubuntu 20.04.
 
 ## License
 The extension is MIT-licensed.

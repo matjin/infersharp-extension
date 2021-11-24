@@ -26,7 +26,8 @@
     "commands": [
       {
         "command": "infersharp-ext.analyze",
-        "title": "InferSharp Analysis"
+        "title": "InferSharp Analysis",
+        "description": "Runs automatic setup if necessary, otherwise, runs Infer#'s analysis on a folder of dlls/pdbs."
       }
     ]
   },
