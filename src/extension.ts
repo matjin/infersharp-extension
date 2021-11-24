@@ -60,7 +60,7 @@ export function activate(context: vscode.ExtensionContext) {
 						"wsl ~ -u root infersharp/infer/lib/infer/infer/bin/infer capture",
 						"wsl ~ -u root mkdir -p infer-out/captured",
 						"wsl ~ -u root infersharp/infer/lib/infer/infer/bin/infer analyzejson --debug-level 1 --pulse --no-biabduction --cfg-json cfg.json --tenv-json tenv.json",
-						"wsl -u root cp -r ~/infer-out/ //mnt" + fileUri[0].path.replace('C:', 'c'),
+						"wsl -u root cp -r ~/infer-out/ " + inputPath,
 					];
 					let child = cp.spawn(analysisCommands.join(' ; '), [], { shell: 'powershell.exe' });
 					child.stdout.on('data', data => infersharpConsole.append(data.toString()));
