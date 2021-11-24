@@ -5,7 +5,7 @@
   "author": {
     "name": "Matthew Jin"
   },
-  "version": "1.9.0",
+  "version": "1.10.0",
   "publisher": "matthew-jin",
   "engines": {
     "vscode": "^1.62.0"
