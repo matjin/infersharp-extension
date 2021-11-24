@@ -23,14 +23,16 @@ export function activate(context: vscode.ExtensionContext) {
 			defaultUri: vscode.workspace.workspaceFolders === undefined ? undefined : vscode.workspace.workspaceFolders[0].uri
 	   };
 		// The code you place here will be executed every time your command is executed
-		let res = cp.spawnSync("wsl -u root --cd '//wsl/Ubuntu/home/root/root' ls infersharp", { shell: 'powershell.exe' });
+		let res = cp.spawnSync("wsl ~ -u root ls infersharp", { shell: 'powershell.exe' });
 		if (res.status !== 0) {
+			// TODO: add timeout on the command
+			// investigate different wsl root path
 			infersharpConsole.appendLine("Starting install; please wait while Infer# binaries are downloaded and extracted.");
 			let analysisCommands = [
 				"wsl --install -d ubuntu",
-				"do {wsl -d ubuntu -u root --cd '//wsl/Ubuntu/home/root/root' wget https://github.com/microsoft/infersharp/releases/download/v1.2/infersharp-linux64-v1.2.tar.gz -O infersharp.tar.gz; $success =$?; Start-Sleep -s 5;} until ($success);",
-				"wsl -d ubuntu -u root --cd '//wsl/Ubuntu/home/root/root' tar -xvzf infersharp.tar.gz",
-				"wsl -d ubuntu -u root --cd '//wsl/Ubuntu/home/root/root' rm infersharp.tar.gz",
+				"do {wsl ~ -d ubuntu -u root wget https://github.com/microsoft/infersharp/releases/download/v1.2/infersharp-linux64-v1.2.tar.gz -O infersharp.tar.gz; $success =$?; Start-Sleep -s 5;} until ($success);",
+				"wsl ~ -d ubuntu -u root tar -xvzf infersharp.tar.gz",
+				"wsl ~ -d ubuntu -u root rm infersharp.tar.gz",
 				"wsl -s ubuntu",
 				"echo 'Setup complete. You may now run Infer#!'"
 			];
@@ -45,18 +47,18 @@ export function activate(context: vscode.ExtensionContext) {
 					let inputPath = "//mnt" + fileUri[0].path.replace('C:', 'c');
 					infersharpConsole.appendLine('InferSharp is analyzing: ' + fileUri[0].path.replace('C:', 'c'));
 					let analysisCommands = [
-						"wsl -u root --cd '//wsl/Ubuntu/home/root/root' rm -rf infer-out/",
-						"wsl -u root --cd '//wsl/Ubuntu/home/root/root' cp infersharp/Cilsil/System.Private.CoreLib.dll " + inputPath + "/System.Private.CoreLib.dll",
+						"wsl ~ -u root rm -rf infer-out/",
+						"wsl ~ -u root cp infersharp/Cilsil/System.Private.CoreLib.dll " + inputPath + "/System.Private.CoreLib.dll",
 						"wsl echo 'Beginning translation.'",
-						"wsl -u root --cd '//wsl/Ubuntu/home/root/root' infersharp/Cilsil/Cilsil translate " + inputPath + " --outcfg " + inputPath + "/cfg.json " + " --outtenv " + inputPath + "/tenv.json",
-						"wsl -u root --cd '//wsl/Ubuntu/home/root/root' mv " + inputPath + "/cfg.json" + " //cfg.json",
-						"wsl -u root --cd '//wsl/Ubuntu/home/root/root' mv " + inputPath + "/tenv.json" + " //tenv.json",
-						"wsl -u root --cd '//wsl/Ubuntu/home/root/root' rm -rf " + inputPath + "/System.Private.CoreLib.dll",
+						"wsl ~ -u root infersharp/Cilsil/Cilsil translate " + inputPath + " --outcfg " + inputPath + "/cfg.json " + " --outtenv " + inputPath + "/tenv.json",
+						"wsl ~ -u root mv " + inputPath + "/cfg.json" + " ~/cfg.json",
+						"wsl ~ -u root mv " + inputPath + "/tenv.json" + " ~/tenv.json",
+						"wsl ~ -u root rm -rf " + inputPath + "/System.Private.CoreLib.dll",
 						"wsl echo 'Translation complete. Beginning analysis.'",
-						"wsl -u root --cd '//wsl/Ubuntu/home/root/root' infersharp/infer/lib/infer/infer/bin/infer capture",
-						"wsl -u root --cd '//wsl/Ubuntu/home/root/root' mkdir -p infer-out/captured",
-						"wsl -u root --cd '//wsl/Ubuntu/home/root/root' infersharp/infer/lib/infer/infer/bin/infer analyzejson --debug-level 1 --pulse --no-biabduction --cfg-json cfg.json --tenv-json tenv.json",
-						"wsl -u root cp -r //infer-out/ //mnt" + fileUri[0].path.replace('C:', 'c'),
+						"wsl ~ -u root infersharp/infer/lib/infer/infer/bin/infer capture",
+						"wsl ~ -u root mkdir -p infer-out/captured",
+						"wsl ~ -u root infersharp/infer/lib/infer/infer/bin/infer analyzejson --debug-level 1 --pulse --no-biabduction --cfg-json cfg.json --tenv-json tenv.json",
+						"wsl -u root cp -r ~/infer-out/ //mnt" + fileUri[0].path.replace('C:', 'c'),
 					];
 					let child = cp.spawn(analysisCommands.join(' ; '), [], { shell: 'powershell.exe' });
 					child.stdout.on('data', data => infersharpConsole.append(data.toString()));
