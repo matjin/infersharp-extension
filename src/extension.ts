@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		else {
 			infersharpConsole.clear();
-			vscode.window.showOpenDialog(options).then(fileUri => {
+			vscode.window.showOpenDialog(options).then(async fileUri => {
 				if (fileUri && fileUri[0]) {
 					let drivePrefix = fileUri[0].path.split('/')[1];
 					let newDrivePrefix = drivePrefix.replace(':', '').toLowerCase();
@@ -56,15 +56,23 @@ export function activate(context: vscode.ExtensionContext) {
 						"wsl ~ -u root mv " + inputPath + "/cfg.json" + " ~/cfg.json",
 						"wsl ~ -u root mv " + inputPath + "/tenv.json" + " ~/tenv.json",
 						"wsl ~ -u root rm -rf " + inputPath + "/System.Private.CoreLib.dll",
+						"wsl ~ -u root rm -rf " + inputPath + "/infer-out",
 						"wsl echo 'Translation complete. Beginning analysis.'",
 						"wsl ~ -u root infersharp/infer/lib/infer/infer/bin/infer capture",
 						"wsl ~ -u root mkdir -p infer-out/captured",
-						"wsl ~ -u root infersharp/infer/lib/infer/infer/bin/infer analyzejson --debug-level 1 --pulse --no-biabduction --cfg-json cfg.json --tenv-json tenv.json",
+						"wsl ~ -u root infersharp/infer/lib/infer/infer/bin/infer analyzejson --debug-level 1 --pulse --no-biabduction --cfg-json cfg.json --tenv-json tenv.json --sarif",
 						"wsl -u root cp -r ~/infer-out/ " + inputPath,
 					];
 					let child = cp.spawn(analysisCommands.join(' ; '), [], { shell: 'powershell.exe' });
 					child.stdout.on('data', data => infersharpConsole.append(data.toString()));
 					child.stderr.on('data', data => infersharpConsole.append(data.toString()));
+					child.on('exit', async () => {
+						const sarifExt = vscode.extensions.getExtension('MS-SarifVSCode.sarif-viewer');
+						if (!sarifExt?.isActive) {
+							await sarifExt?.activate();
+						}
+						await sarifExt?.exports.openLogs([vscode.Uri.file(fileUri[0].path + '/infer-out/report.sarif')]);
+					});
 				}
 				else {
 					infersharpConsole.appendLine("No valid folder given.");
