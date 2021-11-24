@@ -44,8 +44,10 @@ export function activate(context: vscode.ExtensionContext) {
 			infersharpConsole.clear();
 			vscode.window.showOpenDialog(options).then(fileUri => {
 				if (fileUri && fileUri[0]) {
-					let inputPath = "//mnt" + fileUri[0].path.replace('C:', 'c');
-					infersharpConsole.appendLine('InferSharp is analyzing: ' + fileUri[0].path.replace('C:', 'c'));
+					let drivePrefix = fileUri[0].path.split('/')[1];
+					let newDrivePrefix = drivePrefix.replace(':', '').toLowerCase();
+					let inputPath = "//mnt/" + newDrivePrefix + '/' + fileUri[0].path.substring(drivePrefix.length + 2);
+					infersharpConsole.appendLine('InferSharp is analyzing: ' + inputPath);
 					let analysisCommands = [
 						"wsl ~ -u root rm -rf infer-out/",
 						"wsl ~ -u root cp infersharp/Cilsil/System.Private.CoreLib.dll " + inputPath + "/System.Private.CoreLib.dll",
