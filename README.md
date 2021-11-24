@@ -23,9 +23,9 @@ Automatic setup may fail, particularly if your version of Windows is too old. In
 After setup, please execute the following commands from Powershell:
 
 ```
-wsl -u root --cd '//wsl/Ubuntu/home/root/root' wget https://github.com/microsoft/infersharp/releases/download/v1.2/infersharp-linux64-v1.2.tar.gz -O infersharp.tar.gz
-wsl -u root --cd '//wsl/Ubuntu/home/root/root' tar -xvzf infersharp.tar.gz
-wsl -u root --cd '//wsl/Ubuntu/home/root/root' rm infersharp.tar.gz
+wsl ~ -u root wget https://github.com/microsoft/infersharp/releases/download/v1.2/infersharp-linux64-v1.2.tar.gz -O infersharp.tar.gz
+wsl ~ -u root tar -xvzf infersharp.tar.gz
+wsl ~ -u root rm infersharp.tar.gz
 ```
 
 The *InferSharp Analysis* command will now be ready for you to use.
