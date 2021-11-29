@@ -1,14 +1,20 @@
-# infersharp-ext README
+# InferSharp Extension README
 
 This is an extension which integrates [InferSharp](https://github.com/microsoft/infersharp) version 1.2 into VSCode. Currently, this extension has only been tested for Windows.
 
-## Features
+## Getting Started 
+
+1. Run automatic setup via the *InferSharp Analysis* command added to your Command Palette by the extension. Install progress is reported in the InferSharp channel within the Output tab. See **Known Issues** if you run into any issues. Wait for setup to complete.
+2. After setup is complete, running *InferSharp Analysis* will open File Explorer for you to select the root of the directory tree containing DLLs/PDBs to be analyzed.
+3. Analysis will run, with progress updates being reported in the InferSharp window within the Output channel of VSCode. When it is completed, the analysis will open a SARIF representation of the warnings via the SARIF Viewer extension. Additionally, it will copy the full analysis output *infer-out/* directory to the directory you provided.
+
+## Overview
 
 This extension adds the *InferSharp Analysis* command to the Command Palette. 
 
 If InferSharp has not yet been set up on the machine yet, this command will perform installation by installing WSL Ubuntu if it is not already present and then downloading and unpacking InferSharp binaries to the WSL Linux file system. Please note that a Ubuntu terminal will open as a part of this setup process and invite you to set up a username and password; you may close this terminal without providing any input after it has prompted you to provide a UNIX username.
 
-After setup, subsequent invocations of the command prompt the user to provide the root of a directory tree which contains the .dll and .pdb files produced by the project's build system. Note that these files need only need be somewhere in the tree, as InferSharp will traverse the tree to find the binaries. It conducts the analysis through WSL and copies the resulting infer-out directory to the provided path. The bug report is located at infer-out/report.txt.
+After setup, subsequent invocations of the command prompt the user to provide the root of a directory tree which contains the .dll and .pdb files produced by the project's build system. Note that **these files need only need be somewhere in the tree**, as InferSharp will traverse the tree to find the binaries. It conducts the analysis through WSL and copies the resulting infer-out directory to the provided path. The bug report is located at infer-out/report.txt.
 
 ## Requirements
 

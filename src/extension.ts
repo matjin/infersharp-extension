@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 			];
 			let setup = cp.spawn(analysisCommands.join(' ; '), { shell: 'powershell.exe' });
 			setup.stdout.on('data', data => infersharpConsole.append(data.toString()));
-			setup.stderr.on('data', data => infersharpConsole.append('ERROR: ' + data.toString()));
+			setup.stderr.on('data', data => infersharpConsole.append(data.toString()));
 		}
 		else {
 			infersharpConsole.clear();
