@@ -61,7 +61,7 @@ export function translateAndMove(inputPath: string) {
     var getCoreLib = copy(CORELIB_PATH, coreLibCopy);
     var translate = (INFERSHARP_FOLDER_NAME + "/Cilsil/Cilsil translate " + inputPath +
                     " --outcfg " + inputPath + "/cfg.json " +
-                    " --outtenv " + inputPath + "/tenv.json " + "--extprogress");
+                    " --outtenv " + inputPath + "/tenv.json "/* + "--extprogress"*/);
     var moveCfg = move(inputPath + "/cfg.json", "~/cfg.json");
     var moveTenv = move(inputPath + "/tenv.json", "~/tenv.json");
     var removeCoreLibCopy = remove(coreLibCopy);
