@@ -26,12 +26,14 @@ export function activate(context: vscode.ExtensionContext) {
 			];
 			let setup = cp.spawn(analysisCommands.join(' ; '), { shell: 'powershell.exe' });
 			setup.stdout.on('data', data => infersharpConsole.append(data.toString()));
-			setup.stderr.on('data', data => infersharpConsole.append(data.toString()));
+			setup.stderr.on('data', data => infersharpConsole.append('ERROR: ' + data.toString()));
 		}
 		else {
 			infersharpConsole.clear();
 			vscode.window.showOpenDialog(options).then(async fileUri => {
 				if (fileUri && fileUri[0]) {
+					let monitor = cp.spawn(utils.MONITOR, [], { shell: 'powershell.exe' });
+					monitor.stdout.on('data', data => infersharpConsole.append(data.toString()));
 					let drivePrefix = fileUri[0].path.split('/')[1];
 					let newDrivePrefix = drivePrefix.replace(':', '').toLowerCase();
 					let inputPath = "//mnt/" + newDrivePrefix + '/' + fileUri[0].path.substring(drivePrefix.length + 2);
@@ -45,8 +47,13 @@ export function activate(context: vscode.ExtensionContext) {
 					];
 					let child = cp.spawn(analysisCommands.join(' ; '), [], { shell: 'powershell.exe' });
 					child.stdout.on('data', data => infersharpConsole.append(data.toString()));
-					child.stderr.on('data', data => infersharpConsole.append(data.toString()));
+					child.stderr.on('data', data => infersharpConsole.append('ERROR: ' + data.toString()));
+					child.on('kill', () => {
+						monitor.kill();
+						infersharpConsole.appendLine('InferSharp process killed.');
+					});
 					child.on('exit', async () => {
+						monitor.kill();
 						const sarifExt = vscode.extensions.getExtension('MS-SarifVSCode.sarif-viewer');
 						if (!sarifExt?.isActive) {
 							await sarifExt?.activate();

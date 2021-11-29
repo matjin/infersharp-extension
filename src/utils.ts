@@ -26,6 +26,10 @@ export var UNZIP_BINARIES = [runWslUbuntu("tar -xvzf " +  INFERSHARP_TAR_GZ),
                              runWslUbuntu("mv infersharp " + INFERSHARP_FOLDER_NAME)].join( ' ; ');
 export var CHECK_SETUP = runWsl("ls " + INFERSHARP_FOLDER);
 export var SET_WSL_DEFAULT_UBUNTU = "wsl -s ubuntu";
+export var MONITOR = ("do { Start-Sleep -s 60; $count = " + RUN_WSL_UBUNTU + 
+                            " grep -wc 'Elapsed analysis time:' " + INFER_OUT + 
+                            "logs; 'Methods analyzed: ' + $count.Split(' ')[0]; " + 
+                      "} while ($true);");
 
 export function copy(sourcePath: string, destinationPath: string) {
     return "cp " + sourcePath + " " + destinationPath;
@@ -57,7 +61,7 @@ export function translateAndMove(inputPath: string) {
     var getCoreLib = copy(CORELIB_PATH, coreLibCopy);
     var translate = (INFERSHARP_FOLDER_NAME + "/Cilsil/Cilsil translate " + inputPath +
                     " --outcfg " + inputPath + "/cfg.json " +
-                    " --outtenv " + inputPath + "/tenv.json");
+                    " --outtenv " + inputPath + "/tenv.json " + "--extprogress");
     var moveCfg = move(inputPath + "/cfg.json", "~/cfg.json");
     var moveTenv = move(inputPath + "/tenv.json", "~/tenv.json");
     var removeCoreLibCopy = remove(coreLibCopy);
@@ -74,6 +78,9 @@ export function inferAnalyze(inputPath: string) {
     var inferAnalyzeJson = (INFER_BINARIES + " analyzejson " + 
                             " --debug-level 1 --pulse " +
                             "--no-biabduction --sarif " + 
+                            "--disable-issue-type PULSE_UNINITIALIZED_VALUE " +
+                            "--disable-issue-type MEMORY_LEAK " +
+                            "--disable-issue-type UNINITIALIZED_VALUE " +
                             "--cfg-json cfg.json --tenv-json tenv.json");
     var moveOutput = "cp -r ~/infer-out/ " + inputPath;
     return [runWsl(capture), runWsl(makeCaptured),
