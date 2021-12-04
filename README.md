@@ -20,7 +20,7 @@ After setup, subsequent invocations of the command prompt the user to provide th
 
 ## Requirements
 
-Please see the requirements for [WSL](https://docs.microsoft.com/en-us/windows/wsl/install). In particular, please check that you are running Windows 10 version 2004 or higher (Build 19041 or higher), or Windows 11. Otherwise, automated setup may fail and you will have to set up WSL manually.
+Please see the requirements for [WSL](https://docs.microsoft.com/en-us/windows/wsl/install). In particular, please check that you have virtualization turned on and are running Windows 10 version 2004 or higher (Build 19041 or higher), or Windows 11. Otherwise, automated setup may fail and you will have to set up WSL manually.
 
 Additionally, please ensure that Ubuntu 20.04 is your default distribution. 
 
@@ -28,7 +28,7 @@ Additionally, please ensure that Ubuntu 20.04 is your default distribution.
 
 *Automatic Setup Failure*
 
-Automatic setup may fail, particularly if your version of Windows is too old. In this case, please try to run [manual](https://docs.microsoft.com/en-us/windows/wsl/install-manual) installation of WSL and set Ubuntu 20.04 as the default distribution via the -s flag.
+Automatic setup may fail, particularly if your version of Windows is too old or virtualization is not turned on. In this case, please try to run [manual](https://docs.microsoft.com/en-us/windows/wsl/install-manual) installation of WSL and set Ubuntu 20.04 as the default distribution via the -s flag.
 
 After setup, please execute the following commands from Powershell (particularly note the rename of the binary folder to the correct version):
 
