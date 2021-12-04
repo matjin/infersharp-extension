@@ -28,7 +28,7 @@ Additionally, please ensure that Ubuntu 20.04 is your default distribution.
 
 *Automatic Setup Failure*
 
-Automatic setup may fail if your machine lacks the requirements for automatic installation of WSL. For example your version of Windows may be older than Windows 10 version 19041 or virtualization may not be turned on. It may also fail because installing WSL requires elevated privileges (for example, wsl --install may come back with "The requested operation requires elevation"). In these cases, please try to run [manual](https://docs.microsoft.com/en-us/windows/wsl/install-manual) installation of WSL and set Ubuntu 20.04 as the default distribution via the -s flag. Note that if your Windows version is new enough (> build 19041), you may simply need to run wsl --install while running Powershell with administrator privileges.
+Automatic setup may fail if your machine lacks the requirements for automatic installation of WSL. For example, your version of Windows may be older than Windows 10 version 19041 or virtualization may not be turned on. It may also fail because installing WSL requires elevated privileges (for example, wsl --install may come back with "The requested operation requires elevation"). In these cases, please try to run [manual](https://docs.microsoft.com/en-us/windows/wsl/install-manual) installation of WSL and set Ubuntu 20.04 as the default distribution via the -s flag. Note that if your Windows version is new enough (> build 19041), you may simply need to run wsl --install while running Powershell with administrator privileges.
 
 After setup, please execute the following commands from Powershell (particularly note the rename of the binary folder to the correct version):
 
