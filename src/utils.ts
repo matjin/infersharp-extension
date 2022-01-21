@@ -77,7 +77,7 @@ export function inferAnalyze(inputPath: string) {
     var makeCaptured = "mkdir -p infer-out/captured";
     var inferAnalyzeJson = (INFER_BINARIES + " analyzejson " + 
                             " --debug-level 1 --pulse " +
-                            "--no-biabduction --sarif " + 
+                            "--sarif " + 
                             "--disable-issue-type PULSE_UNINITIALIZED_VALUE " +
                             "--disable-issue-type MEMORY_LEAK " +
                             "--disable-issue-type UNINITIALIZED_VALUE " +
